@@ -9,7 +9,12 @@ const Fuse = require('fuse.js');
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
+
 const ffmpegStatic = require('ffmpeg-static');
+
+const YTDLP = process.platform === 'win32'
+  ? path.join(__dirname, 'yt-dlp.exe')
+  : 'yt-dlp';
 
 require('dotenv').config();
 
@@ -149,14 +154,12 @@ function safeDestroyConnection(guildId) {
 
 // ─── YouTube ──────────────────────────────────────────────────────────────────
 
-async function searchYoutube(query, mustContain = []) {
-  return new Promise((resolve) => {
-    const ytdlp = spawn(path.join(__dirname, 'yt-dlp.exe'), [
-      `ytsearch5:${query}`,
-      '--get-url', '--get-title',
-      '--format', 'bestaudio',
-      '--no-playlist', '--flat-playlist',
-    ]);
+const ytdlp = spawn(YTDLP, [
+  `ytsearch5:${query}`,
+  '--get-url', '--get-title',
+  '--format', 'bestaudio',
+  '--no-playlist', '--flat-playlist',
+]);
     let output = '';
     ytdlp.stdout.on('data', d => output += d.toString());
     ytdlp.on('close', () => {
@@ -372,7 +375,7 @@ async function getRandomOpening(theme = 'anime', mode = 'mainstream', customList
 
 async function getDuration(youtubeUrl) {
   return new Promise((resolve) => {
-    const ytdlp = spawn(path.join(__dirname, 'yt-dlp.exe'), [
+    const ytdlp = spawn(YTDLP, [
       youtubeUrl, '--get-duration', '--no-playlist', '--quiet',
     ]);
     let output = '';
@@ -405,7 +408,7 @@ async function playAudio(connection, youtubeUrl, hardcore = false) {
   const startTime = minStart >= maxStart ? minStart : Math.floor(Math.random() * (maxStart - minStart)) + minStart;
   console.log(`⏱️ Durée: ${duration}s — Début à ${startTime}s`);
 
-  const ytdlp = spawn(path.join(__dirname, 'yt-dlp.exe'), [
+  const ytdlp = spawn(YTDLP, [
     youtubeUrl, '-f', 'bestaudio', '-o', '-', '--quiet', '--no-part',
   ]);
 
