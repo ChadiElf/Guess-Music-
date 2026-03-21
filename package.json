@@ -5,7 +5,7 @@
   "main": "arp.js",
   "scripts": {
     "start": "node arp.js",
-    "build": "npm install && if [ \"$(uname)\" = \"Linux\" ]; then curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && chmod a+rx /usr/local/bin/yt-dlp; fi"
+    "build": "npm install && if [ \"$(uname)\" = \"Linux\" ]; then curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ./yt-dlp && chmod a+rx ./yt-dlp; fi"
   },
   "keywords": [],
   "author": "",

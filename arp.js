@@ -14,7 +14,7 @@ const ffmpegStatic = require('ffmpeg-static');
 
 const YTDLP = process.platform === 'win32'
   ? path.join(__dirname, 'yt-dlp.exe')
-  : 'yt-dlp';
+  : path.join(__dirname, 'yt-dlp');
 
 require('dotenv').config();
 
