@@ -154,12 +154,14 @@ function safeDestroyConnection(guildId) {
 
 // ─── YouTube ──────────────────────────────────────────────────────────────────
 
-const ytdlp = spawn(YTDLP, [
-  `ytsearch5:${query}`,
-  '--get-url', '--get-title',
-  '--format', 'bestaudio',
-  '--no-playlist', '--flat-playlist',
-]);
+async function searchYoutube(query, mustContain = []) {
+  return new Promise((resolve) => {
+    const ytdlp = spawn(YTDLP, [
+      `ytsearch5:${query}`,
+      '--get-url', '--get-title',
+      '--format', 'bestaudio',
+      '--no-playlist', '--flat-playlist',
+    ]);
     let output = '';
     ytdlp.stdout.on('data', d => output += d.toString());
     ytdlp.on('close', () => {
